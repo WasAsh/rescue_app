@@ -10,38 +10,50 @@ class Issue2 extends StatefulWidget {
 
   final String issueId ;
   final String ownerId ;
-  final String rescueId ;
   final String issue ;
   final String fullAddress ;
   final String resType ;
+  final String city ;
   final String phone ;
-  final String displayName ;
+  final String fullName ;
+  final String fireType ;
+  final String firePlace ;
+  final String injuryCount ;
+  final String injuryType ;
 
-  Issue2({this.issueId , this.ownerId , this.rescueId , this.issue , this.fullAddress , this.resType , this.phone , this.displayName});
+  Issue2({this.issueId , this.ownerId , this.issue , this.city , this.fullAddress , this.resType , this.phone , this.fullName , this.fireType , this.firePlace , this.injuryCount , this.injuryType});
 
   factory Issue2.fromDoc(DocumentSnapshot doc){
     return Issue2(
       issueId: doc['issueId'],
       ownerId: doc['ownerId'],
-      rescueId: doc['rescueId'],
       issue: doc['issue'],
       fullAddress: doc['fullAddress'],
       resType: doc['resType'],
       phone: doc['phone'],
-      displayName: doc['displayName'],
+      city: doc['city'],
+      fullName: doc['fullName'],
+      fireType: doc['fireType'],
+      firePlace: doc['firePlace'],
+      injuryCount: doc['injuryCount'],
+      injuryType: doc['injuryType'],
     );
   }
 
   @override
   _Issue2State createState() => _Issue2State(
-      issueId: this.issueId ,
-      ownerId: this.ownerId ,
-      rescueId: this.rescueId ,
-      issue: this.issue ,
-      fullAddress: this.fullAddress ,
-      resType: this.resType ,
-      phone: this.phone ,
-      displayName: this.displayName
+    issueId: this.issueId ,
+    ownerId: this.ownerId ,
+    issue: this.issue ,
+    fullAddress: this.fullAddress ,
+    resType: this.resType ,
+    phone: this.phone ,
+    fullName: this.fullName ,
+    city: this.city ,
+    fireType: this.fireType,
+    firePlace: this.firePlace,
+    injuryCount: this.injuryCount,
+    injuryType: this.injuryType,
   );
 }
 
@@ -49,14 +61,18 @@ class _Issue2State extends State<Issue2> {
 
   final String issueId ;
   final String ownerId ;
-  final String rescueId ;
   final String issue ;
   final String fullAddress ;
   final String resType ;
+  final String city ;
   final String phone ;
-  final String displayName ;
+  final String fullName ;
+  final String fireType ;
+  final String firePlace ;
+  final String injuryCount ;
+  final String injuryType ;
 
-  _Issue2State({this.issueId , this.ownerId , this.rescueId , this.issue , this.fullAddress , this.resType , this.phone , this.displayName});
+  _Issue2State({this.issueId , this.ownerId , this.issue , this.fullAddress , this.resType , this.phone , this.fullName , this.city, this.fireType , this.firePlace , this.injuryCount , this.injuryType});
 
   buildIssueTop(){
     return FutureBuilder(
@@ -91,7 +107,13 @@ class _Issue2State extends State<Issue2> {
                         SizedBox(height: 10,),
                         Text('Issue: $issue') ,
                         SizedBox(height: 10,),
-                        Text('Rescue Type: $resType') ,
+                        Text('Injury Type: $injuryType') ,
+                        SizedBox(height: 10,),
+                        Text('Injury Count: $injuryCount') ,
+                        SizedBox(height: 10,),
+                        Text('Fire Type: $fireType') ,
+                        SizedBox(height: 10,),
+                        Text('Fire Place: $firePlace') ,
                         SizedBox(height: 10,),
                       ],
                     ),
@@ -123,7 +145,6 @@ class _Issue2State extends State<Issue2> {
       children: <Widget>[
         Text('Issue : $issue ') ,
         Text('Full Address : $fullAddress'),
-        Text('Rescue Type : $resType') ,
       ],
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +29,11 @@ class _HomeState extends State<Home> {
 
   bool isAuth = false ;
   PageController pageViewController ;
+  final _formKey = GlobalKey<FormState>();
   int pageIndex = 0;
+  String phone , fullName ;
+  List<String> rescueTypeItems = <String>['Police', 'Ambulance' , 'Firefighting'];
+  var selectedRescue;
 
   //ensure that user signed in or not
   @override
@@ -80,13 +86,14 @@ class _HomeState extends State<Home> {
     DocumentSnapshot doc = await rescueRef.document(rescue.id).get();
 
     if(!doc.exists){
-      final rescueType = await Navigator.push(context , MaterialPageRoute(builder: (context) => CreateAccount()));
       rescueRef.document(rescue.id).setData({
         'id' : rescue.id ,
         'displayName' : rescue.displayName ,
+        'fullName' : null ,
         'photoUrl' : rescue.photoUrl ,
         'email' : rescue.email ,
-        'rescueType' : rescueType ,
+        'rescueType' : null ,
+        'phone' : null ,
         'timeStamp' : timeStamp ,
       });
       doc = await rescueRef.document(rescue.id).get();
@@ -115,23 +122,171 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: PageView(
         children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'LogOut' ,
-                style: TextStyle(
-                  color: Colors.red ,
-                  fontSize: 20 ,
+          Scaffold(
+            appBar: AppBar(
+              title: Text('Home'),
+              centerTitle: true,
+              backgroundColor: Colors.red,
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Edit Profile'),
+                  onPressed: (){
+                    showModalBottomSheet(
+                        context: context ,
+                        builder: (context){
+                          return ListView(
+                            children: <Widget>[
+                              Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 25),
+                                      child: Center(
+                                        child: Text(
+                                          'Enter ur phone number' ,
+                                          style: TextStyle(
+                                            fontSize: 25 ,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: Container(
+                                        child: Form(
+                                          key: _formKey,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              TextFormField(
+                                                autovalidate: true,
+                                                validator: (val){
+                                                  if(val.trim().length < 6 || val.isEmpty){
+                                                    return('The number is not correct') ;
+                                                  }else if(val.trim().length > 12){
+                                                    return('The number is too long') ;
+                                                  }else{
+                                                    return null ;
+                                                  }
+                                                },
+                                                onSaved: (val) => phone = val,
+                                                decoration: InputDecoration(
+                                                  border: OutlineInputBorder(),
+                                                  icon: Icon(Icons.phone) ,
+                                                  labelText: 'Phone number' ,
+                                                  labelStyle: TextStyle(fontSize: 12) ,
+                                                  hintText: '01234567890' ,
+                                                ),
+                                              ),
+                                              SizedBox(height: 10,) ,
+                                              TextFormField(
+                                                autovalidate: true,
+                                                validator: (val){
+                                                  if(val.trim().length < 6 || val.isEmpty){
+                                                    return('The name is not correct') ;
+                                                  }else if(val.trim().length > 30){
+                                                    return('The name is too long') ;
+                                                  }else{
+                                                    return null ;
+                                                  }
+                                                },
+                                                onSaved: (val) => fullName = val,
+                                                decoration: InputDecoration(
+                                                  border: OutlineInputBorder(),
+                                                  icon: Icon(Icons.person) ,
+                                                  labelText: 'Full Name' ,
+                                                  labelStyle: TextStyle(fontSize: 12) ,
+                                                ),
+                                              ),
+                                              SizedBox(height: 10,) ,
+                                              DropdownButton(
+                                                items: rescueTypeItems
+                                                    .map((value) => DropdownMenuItem(
+                                                  child: Text(value),
+                                                  value: value,
+                                                ),
+                                                ).toList(),
+                                                onChanged: (selectedRescueType){
+                                                  setState(() {
+                                                    selectedRescue = selectedRescueType ;
+                                                  });
+                                                },
+                                                value: selectedRescue,
+                                                isExpanded: false,
+                                                hint: Text('Select Rescue Type'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                        height: 50,
+                                        width: 350,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey ,
+                                          borderRadius: BorderRadius.circular(7) ,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Submit' ,
+                                            style: TextStyle(
+                                              color: Colors.white ,
+                                              fontSize: 15 ,
+                                              fontWeight: FontWeight.bold ,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: (){
+                                        final form = _formKey.currentState ;
+                                        if(form.validate()){
+                                          form.save() ;
+//                                          SnackBar snackBar = SnackBar(content: Text('Welcome !'),);
+//                                          _scaffoldKey.currentState.showSnackBar(snackBar) ;
+                                          rescueRef.document(currentRes.id).updateData({
+                                            'fullName' : fullName,
+                                            'phone' :  phone,
+                                            'rescueType' : selectedRescue ,
+                                          });
+                                          Timer(Duration(seconds: 1) , (){
+                                            Navigator.pop(context) ;
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ) ;
+                        }
+                    );
+                  },
                 ),
-              ),
-              RaisedButton(
-                child: Icon(Icons.arrow_back),
-                onPressed: signOut,
-              ),
-            ],
+              ],
+            ),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'LogOut' ,
+                  style: TextStyle(
+                    color: Colors.red ,
+                    fontSize: 20 ,
+                  ),
+                ),
+                RaisedButton(
+                  child: Icon(Icons.arrow_back),
+                  onPressed: signOut,
+                ),
+              ],
+            ),
           ),
+
           Feeds(rescueId: currentRes?.id ),
           OnProgressFeeds(rescueId: currentRes?.id),
           DoneFeeds(rescueId: currentRes?.id),

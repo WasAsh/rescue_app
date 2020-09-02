@@ -13,10 +13,15 @@ class Issue extends StatefulWidget {
   final String issue ;
   final String fullAddress ;
   final String resType ;
+  final String city ;
   final String phone ;
-  final String displayName ;
+  final String fullName ;
+  final String fireType ;
+  final String firePlace ;
+  final String injuryCount ;
+  final String injuryType ;
 
-  Issue({this.issueId , this.ownerId , this.issue , this.fullAddress , this.resType , this.phone , this.displayName});
+  Issue({this.issueId , this.ownerId , this.issue , this.city , this.fullAddress , this.resType , this.phone , this.fullName , this.fireType , this.firePlace , this.injuryCount , this.injuryType});
 
   factory Issue.fromDoc(DocumentSnapshot doc){
     return Issue(
@@ -26,19 +31,29 @@ class Issue extends StatefulWidget {
       fullAddress: doc['fullAddress'],
       resType: doc['resType'],
       phone: doc['phone'],
-      displayName: doc['displayName'],
+      city: doc['city'],
+      fullName: doc['fullName'],
+      fireType: doc['fireType'],
+      firePlace: doc['firePlace'],
+      injuryCount: doc['injuryCount'],
+      injuryType: doc['injuryType'],
     );
   }
 
   @override
   _IssueState createState() => _IssueState(
-      issueId: this.issueId ,
-      ownerId: this.ownerId ,
-      issue: this.issue ,
-      fullAddress: this.fullAddress ,
-      resType: this.resType ,
-      phone: this.phone ,
-      displayName: this.displayName
+    issueId: this.issueId ,
+    ownerId: this.ownerId ,
+    issue: this.issue ,
+    fullAddress: this.fullAddress ,
+    resType: this.resType ,
+    phone: this.phone ,
+    fullName: this.fullName ,
+    city: this.city ,
+    fireType: this.fireType,
+    firePlace: this.firePlace,
+    injuryCount: this.injuryCount,
+    injuryType: this.injuryType,
   );
 }
 
@@ -49,10 +64,15 @@ class _IssueState extends State<Issue> {
   final String issue ;
   final String fullAddress ;
   final String resType ;
+  final String city ;
   final String phone ;
-  final String displayName ;
+  final String fullName ;
+  final String fireType ;
+  final String firePlace ;
+  final String injuryCount ;
+  final String injuryType ;
 
-  _IssueState({this.issueId , this.ownerId , this.issue , this.fullAddress , this.resType , this.phone , this.displayName});
+  _IssueState({this.issueId , this.ownerId , this.issue , this.fullAddress , this.resType , this.phone , this.fullName , this.city, this.fireType , this.firePlace , this.injuryCount , this.injuryType});
 
   buildIssueTop(){
     return FutureBuilder(
@@ -89,6 +109,14 @@ class _IssueState extends State<Issue> {
                       SizedBox(height: 10,),
                       Text('Rescue Type: $resType') ,
                       SizedBox(height: 10,),
+                      Text('Injury Type: $injuryType') ,
+                      SizedBox(height: 10,),
+                      Text('Injury Count: $injuryCount') ,
+                      SizedBox(height: 10,),
+                      Text('Fire Type: $fireType') ,
+                      SizedBox(height: 10,),
+                      Text('Fire Place: $firePlace') ,
+                      SizedBox(height: 10,),
                     ],
                   ),
                 );
@@ -108,18 +136,22 @@ class _IssueState extends State<Issue> {
                   'ownerId' : ownerId ,
                   'rescueId' : currentRes.id ,
                   'issue' : issue ,
-                  'name' : caseA.displayName ,
+                  'fullName' : fullName ,
                   'email' : caseA.email ,
                   'phone' : caseA.phone ,
                   'rescueType' : resType ,
                   'fullAddress' : fullAddress ,
+                  'injuryType' : injuryType ,
+                  'injuryCount' : injuryCount ,
+                  'fireType' : fireType ,
+                  'firePlace' : firePlace ,
                 }).whenComplete(() =>{
                   Firestore.instance.collection('issues').document(issueId).delete()
                 });
               },
             ),
             title: Text(
-              caseA.displayName ,
+              fullName ,
               style: TextStyle(color: Colors.black , fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
