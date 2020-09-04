@@ -89,33 +89,35 @@ class _Issue2State extends State<Issue2> {
                 context: context ,
                 builder: (context){
                   return Padding(
-                    padding: const EdgeInsets.only(left:15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 40,),
-                        Center(child: Text('Full Info' , style: TextStyle(fontWeight: FontWeight.bold),),) ,
-                        SizedBox(height: 10,),
-                        Text('Full Name: ${caseA.displayName}') ,
-                        SizedBox(height: 10,),
-                        Text('Phone Num: ${caseA.phone}') ,
-                        SizedBox(height: 10,),
-                        Text('Email: ${caseA.email}') ,
-                        SizedBox(height: 10,),
-                        Text('Full Address: $fullAddress') ,
-                        SizedBox(height: 10,),
-                        Text('Issue: $issue') ,
-                        SizedBox(height: 10,),
-                        Text('Injury Type: $injuryType') ,
-                        SizedBox(height: 10,),
-                        Text('Injury Count: $injuryCount') ,
-                        SizedBox(height: 10,),
-                        Text('Fire Type: $fireType') ,
-                        SizedBox(height: 10,),
-                        Text('Fire Place: $firePlace') ,
-                        SizedBox(height: 10,),
-                      ],
+                    padding: const EdgeInsets.only(left:15 , right: 15),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          SizedBox(height: 20,),
+                          Center(child: Text('البيانات بالكامل' , style: TextStyle(fontWeight: FontWeight.bold ,fontSize: 18),),) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection:TextDirection.rtl ,child: Text('الاسم بالكامل: ${caseA.displayName}')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('رقم الهاتف: ${caseA.phone}')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('الايميل: ${caseA.email}')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('العنوان بالكامل: $fullAddress')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('الطلب: $issue')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('نوع الاصابة(اسعاف): $injuryType')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('عدد الاصابات(اسعاف): $injuryCount')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('نوع الحريق(حريق): $fireType')) ,
+                          SizedBox(height: 10,),
+                          Directionality(textDirection: TextDirection.rtl,child: Text('مكان الحريق(حريق): $firePlace')) ,
+                          SizedBox(height: 10,),
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -153,9 +155,10 @@ class _Issue2State extends State<Issue2> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         buildIssueTop() ,
-        buildIssueBody() ,
+        Padding(padding: EdgeInsets.only(left: 30), child: buildIssueBody(),) ,
         Divider(thickness: 2,),
         SizedBox(height: 15,)
       ],

@@ -16,7 +16,7 @@ class _CreateAccountState extends State<CreateAccount> {
     final form = _formKey.currentState ;
     if(form.validate()){
       form.save() ;
-      SnackBar snackBar = SnackBar(content: Text('Welcome $type'),);
+      SnackBar snackBar = SnackBar(content: Text('مرحبا : $type'),);
       _scaffoldKey.currentState.showSnackBar(snackBar) ;
       Timer(Duration(seconds: 3) , (){
         Navigator.pop(context , type) ;
@@ -29,7 +29,7 @@ class _CreateAccountState extends State<CreateAccount> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Set Your Data'),
+        title: Text('تعديل البيانات'),
         backgroundColor: Colors.red,
         centerTitle: true,
       ),
@@ -42,7 +42,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   padding: EdgeInsets.only(top: 25),
                   child: Center(
                     child: Text(
-                      'Enter ur Rescue Type' ,
+                      'من فضلك قم باختيار نوع الانقاذ' ,
                       style: TextStyle(
                         fontSize: 25 ,
                       ),
@@ -59,20 +59,19 @@ class _CreateAccountState extends State<CreateAccount> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           DropdownButtonFormField(
-                            hint: Text('Select a type'),
                             value: value,
                             items: [
                               DropdownMenuItem<String>(
-                                child: Text('Police'),
-                                value: 'Police',
+                                child: Text('شرطي'),
+                                value: 'شرطي',
                               ),
                               DropdownMenuItem(
-                                child: Text('Fire'),
-                                value: 'Firefighting',
+                                child: Text('رجل اطفاء'),
+                                value: 'رجل اطفاء',
                               ),
                               DropdownMenuItem(
-                                child: Text('Ambulance'),
-                                value: 'Ambulance',
+                                child: Text('مسعف'),
+                                value: 'مسعف',
                               ),
                             ],
                             onChanged: (item){
@@ -83,9 +82,8 @@ class _CreateAccountState extends State<CreateAccount> {
                             onSaved: (value) => type = value ,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Type' ,
                               labelStyle: TextStyle(fontSize: 15) ,
-                              hintText: 'Choose your Type' ,
+                              hintText: 'نوع المنقذ' ,
                             ),
                           ),
                         ],
@@ -103,7 +101,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                     child: Center(
                       child: Text(
-                        'Submit' ,
+                        'تأكيد' ,
                         style: TextStyle(
                           color: Colors.white ,
                           fontSize: 15 ,

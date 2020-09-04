@@ -52,7 +52,7 @@ class _OnProgressFeedsState extends State<OnProgressFeeds> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('In Progress feeds'),
+        title: Text('طلبات قيد التنفيذ'),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),

@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
   final _formKey = GlobalKey<FormState>();
   int pageIndex = 0;
   String phone , fullName ;
-  List<String> rescueTypeItems = <String>['Police', 'Ambulance' , 'Firefighting'];
+  List<String> rescueTypeItems = <String>['شرطي', 'مسعف' , 'رجل اطفاء'];
   var selectedRescue;
 
   //ensure that user signed in or not
@@ -125,12 +125,34 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Scaffold(
             appBar: AppBar(
-              title: Text('Home'),
+              title: Text('الرئيسية'),
               centerTitle: true,
               backgroundColor: Colors.red,
               actions: <Widget>[
+                RaisedButton.icon(
+                  icon: Icon(Icons.cancel),
+                  label: Text('تسجيل الخروج'),
+                  onPressed: signOut,
+                  color: Colors.red,
+                ),
+              ],
+            ),
+            body: ListView(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 30 , right: 10 , left: 10),
+                  child: Text(
+                    'مرحباً بك : من فضلك قم بتحديث ملفك الشخصي عند اول استخدام للتطبيق بواسطة الذهاب الى الصفحه المخصصة لذلك عن طريق' ,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black ,
+                      fontSize: 20 ,
+                      fontWeight: FontWeight.bold ,
+                    ),
+                  ),
+                ),
                 FlatButton(
-                  child: Text('Edit Profile'),
+                  child: Text('تعديل البيانات' , style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
                   onPressed: (){
                     showModalBottomSheet(
                         context: context ,
@@ -144,7 +166,7 @@ class _HomeState extends State<Home> {
                                       padding: EdgeInsets.only(top: 25),
                                       child: Center(
                                         child: Text(
-                                          'Enter ur phone number' ,
+                                          'تعديل البيانات الشخصية' ,
                                           style: TextStyle(
                                             fontSize: 25 ,
                                           ),
@@ -164,9 +186,9 @@ class _HomeState extends State<Home> {
                                                 autovalidate: true,
                                                 validator: (val){
                                                   if(val.trim().length < 6 || val.isEmpty){
-                                                    return('The number is not correct') ;
-                                                  }else if(val.trim().length > 12){
-                                                    return('The number is too long') ;
+                                                    return('الرقم المدخل غير صحيح') ;
+                                                  }else if(val.trim().length > 15){
+                                                    return('الرقم المدخل غير صحيح') ;
                                                   }else{
                                                     return null ;
                                                   }
@@ -175,7 +197,7 @@ class _HomeState extends State<Home> {
                                                 decoration: InputDecoration(
                                                   border: OutlineInputBorder(),
                                                   icon: Icon(Icons.phone) ,
-                                                  labelText: 'Phone number' ,
+                                                  labelText: 'رقم الهاتف' ,
                                                   labelStyle: TextStyle(fontSize: 12) ,
                                                   hintText: '01234567890' ,
                                                 ),
@@ -185,9 +207,9 @@ class _HomeState extends State<Home> {
                                                 autovalidate: true,
                                                 validator: (val){
                                                   if(val.trim().length < 6 || val.isEmpty){
-                                                    return('The name is not correct') ;
+                                                    return('الاحرف قليلة جدا') ;
                                                   }else if(val.trim().length > 30){
-                                                    return('The name is too long') ;
+                                                    return('الاحرف كثيرة جدا') ;
                                                   }else{
                                                     return null ;
                                                   }
@@ -196,27 +218,11 @@ class _HomeState extends State<Home> {
                                                 decoration: InputDecoration(
                                                   border: OutlineInputBorder(),
                                                   icon: Icon(Icons.person) ,
-                                                  labelText: 'Full Name' ,
+                                                  labelText: 'الاسم بالكامل' ,
                                                   labelStyle: TextStyle(fontSize: 12) ,
                                                 ),
                                               ),
                                               SizedBox(height: 10,) ,
-//                                              DropdownButton(
-//                                                items: rescueTypeItems
-//                                                    .map((value) => DropdownMenuItem(
-//                                                  child: Text(value),
-//                                                  value: value,
-//                                                ),
-//                                                ).toList(),
-//                                                onChanged: (selectedRescueType){
-//                                                  setState(() {
-//                                                    selectedRescue = selectedRescueType ;
-//                                                  });
-//                                                },
-//                                                value: selectedRescue,
-//                                                isExpanded: false,
-//                                                hint: Text('Select Rescue Type'),
-//                                              ),
                                             ],
                                           ),
                                         ),
@@ -232,7 +238,7 @@ class _HomeState extends State<Home> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'Submit' ,
+                                            'تأكيد' ,
                                             style: TextStyle(
                                               color: Colors.white ,
                                               fontSize: 15 ,
@@ -245,12 +251,9 @@ class _HomeState extends State<Home> {
                                         final form = _formKey.currentState ;
                                         if(form.validate()){
                                           form.save() ;
-//                                          SnackBar snackBar = SnackBar(content: Text('Welcome !'),);
-//                                          _scaffoldKey.currentState.showSnackBar(snackBar) ;
                                           rescueRef.document(currentRes.id).updateData({
                                             'fullName' : fullName,
                                             'phone' :  phone,
-//                                            'rescueType' : selectedRescue ,
                                           });
                                           Timer(Duration(seconds: 1) , (){
                                             Navigator.pop(context) ;
@@ -269,25 +272,7 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'LogOut' ,
-                  style: TextStyle(
-                    color: Colors.red ,
-                    fontSize: 20 ,
-                  ),
-                ),
-                RaisedButton(
-                  child: Icon(Icons.arrow_back),
-                  onPressed: signOut,
-                ),
-              ],
-            ),
           ),
-
           Feeds(rescueId: currentRes?.id ),
           OnProgressFeeds(rescueId: currentRes?.id),
           DoneFeeds(rescueId: currentRes?.id),
@@ -301,10 +286,10 @@ class _HomeState extends State<Home> {
         onTap: onTap,
         activeColor: Colors.red,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.arrow_back)),
-          BottomNavigationBarItem(icon: Icon(Icons.feedback)),
-          BottomNavigationBarItem(icon: Icon(Icons.play_circle_filled)),
-          BottomNavigationBarItem(icon: Icon(Icons.check_circle)),
+          BottomNavigationBarItem(icon: Icon(Icons.arrow_back) , title: Text('الرئيسية' , style: TextStyle(fontSize: 13),)),
+          BottomNavigationBarItem(icon: Icon(Icons.feedback) , title: Text('الطلبات' , style: TextStyle(fontSize: 13),)),
+          BottomNavigationBarItem(icon: Icon(Icons.play_circle_filled) , title: Text('قيد التنفيذ' , style: TextStyle(fontSize: 13),)),
+          BottomNavigationBarItem(icon: Icon(Icons.check_circle) , title: Text('منتهية' , style: TextStyle(fontSize: 13),)),
         ],
       ),
     );
@@ -320,7 +305,7 @@ class _HomeState extends State<Home> {
             end: Alignment.bottomLeft ,
             colors: [
               Colors.grey ,
-              Colors.grey.shade700,
+              Colors.red.shade700,
             ],
           ),
         ),
@@ -329,18 +314,29 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Rescue App !' ,
+              '218 Rescue App' ,
               style: TextStyle(
-                fontSize: 30 ,
-                color: Colors.white ,
+                fontSize: 40 ,
+                fontWeight: FontWeight.bold,
+                color: Colors.black ,
               ),
             ),
             SizedBox(height: 10,),
             Text(
-              'Sign In By Google !' ,
+              'تطبيق المنقذ' ,
               style: TextStyle(
-                fontSize: 40 ,
-                color: Colors.white ,
+                fontSize: 20 ,
+                fontWeight: FontWeight.bold,
+                color: Colors.black38 ,
+              ),
+            ),
+            SizedBox(height: 120,),
+            Text(
+              'تسجيل الدخول باستخدام حساب غوغل' ,
+              style: TextStyle(
+                fontSize: 20 ,
+                fontWeight: FontWeight.bold,
+                color: Colors.black ,
               ),
             ),
             GestureDetector(

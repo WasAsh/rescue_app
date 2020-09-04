@@ -53,7 +53,7 @@ class _DoneFeedsState extends State<DoneFeeds> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Done feeds'),
+        title: Text('طلبات منتهية'),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),

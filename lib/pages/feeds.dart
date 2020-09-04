@@ -53,7 +53,7 @@ class _FeedsState extends State<Feeds> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My feeds'),
+        title: Text('الطلبات'),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
