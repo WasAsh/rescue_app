@@ -86,13 +86,14 @@ class _HomeState extends State<Home> {
     DocumentSnapshot doc = await rescueRef.document(rescue.id).get();
 
     if(!doc.exists){
+      final resType = await Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
       rescueRef.document(rescue.id).setData({
         'id' : rescue.id ,
         'displayName' : rescue.displayName ,
         'fullName' : null ,
         'photoUrl' : rescue.photoUrl ,
         'email' : rescue.email ,
-        'rescueType' : null ,
+        'rescueType' : resType ,
         'phone' : null ,
         'timeStamp' : timeStamp ,
       });
@@ -200,22 +201,22 @@ class _HomeState extends State<Home> {
                                                 ),
                                               ),
                                               SizedBox(height: 10,) ,
-                                              DropdownButton(
-                                                items: rescueTypeItems
-                                                    .map((value) => DropdownMenuItem(
-                                                  child: Text(value),
-                                                  value: value,
-                                                ),
-                                                ).toList(),
-                                                onChanged: (selectedRescueType){
-                                                  setState(() {
-                                                    selectedRescue = selectedRescueType ;
-                                                  });
-                                                },
-                                                value: selectedRescue,
-                                                isExpanded: false,
-                                                hint: Text('Select Rescue Type'),
-                                              ),
+//                                              DropdownButton(
+//                                                items: rescueTypeItems
+//                                                    .map((value) => DropdownMenuItem(
+//                                                  child: Text(value),
+//                                                  value: value,
+//                                                ),
+//                                                ).toList(),
+//                                                onChanged: (selectedRescueType){
+//                                                  setState(() {
+//                                                    selectedRescue = selectedRescueType ;
+//                                                  });
+//                                                },
+//                                                value: selectedRescue,
+//                                                isExpanded: false,
+//                                                hint: Text('Select Rescue Type'),
+//                                              ),
                                             ],
                                           ),
                                         ),
@@ -249,7 +250,7 @@ class _HomeState extends State<Home> {
                                           rescueRef.document(currentRes.id).updateData({
                                             'fullName' : fullName,
                                             'phone' :  phone,
-                                            'rescueType' : selectedRescue ,
+//                                            'rescueType' : selectedRescue ,
                                           });
                                           Timer(Duration(seconds: 1) , (){
                                             Navigator.pop(context) ;

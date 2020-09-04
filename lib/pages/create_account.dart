@@ -68,15 +68,11 @@ class _CreateAccountState extends State<CreateAccount> {
                               ),
                               DropdownMenuItem(
                                 child: Text('Fire'),
-                                value: 'Fire',
+                                value: 'Firefighting',
                               ),
                               DropdownMenuItem(
                                 child: Text('Ambulance'),
                                 value: 'Ambulance',
-                              ),
-                              DropdownMenuItem(
-                                child: Text('Savage'),
-                                value: 'Savage',
                               ),
                             ],
                             onChanged: (item){
